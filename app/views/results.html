@@ -1,0 +1,59 @@
+
+<h2>The route to chosen gas station</h2>
+<div class="row" ng-if="chosenStation.chosen.name ==''">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<p>Seems you haven't choose anything yet. Please, go to <a ng-href="#!/search">Search page</a> and provide the starting point,and then select the preferred gas stataion.</p>
+	</div>
+</div>
+
+<div class="row" ng-if="chosenStation.start !='' && chosenStation.chosen.name !=''">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<h3>You have selected the route to {{chosenStation.chosen.name}} ({{chosenStation.chosen.street}})</h3>
+		<p>Below is the detailed information about getting there.</p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="chosenStation.chosen.name == ''" >
+		<p>Default map:</p>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="chosenStation.start !='' && chosenStation.chosen.name !=''">
+		<h3>Take a look at the route to the chosen gas station</h3>
+		<p>The information is provided by Google Maps service.</p>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="map" style="width:80vw; max-width:700px; height:50vh; margin:0 auto;">
+	</div>
+</div>	
+<hr>
+<div class="row" ng-if="chosenStation.chosen.name == '1'">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="staticMap" style="height:50vh; max-width:700px;">
+	<p style="color:red;">Unfortunately, you are offline. But you still can see the picture of the map with the route to the chosen gas station:</p>
+		<img ng-src="{{staticMap}}">
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="chosenStation.start !='' && chosenStation.chosen.name !=''">
+		<h3>Here is the list of the dirrections for getting to the selected station:</h3>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="right-panel">
+	</div>
+</div>
+
+<div class="row" ng-if="chosenStation.start !='' && chosenStation.chosen.name !=''">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="right-panel">
+		<h3>Listen to the directions?</h3>
+		<p>You can have a chance to listen to the directions once you are ready. The app will send you notification. Clicking this notification will let the app to speak up the first direction. After that - another notification will be send. So you will be able to click it as soon as you are ready for the next direction.</p>
+		<button class="btn btn-primary btn-lg center-block" type="button"  id="pushIt" ng-click="speakIt()">Speak it up</button>
+	</div>
+</div>
+<hr><br>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-if="chosenStation.start !='' && chosenStation.chosen.name !=''">
+		<h4>And the street view of your final destionation</h4>
+		<p>So you can guess the neibourhoods when you are there:</p>
+	</div>	
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="street-view" style="width:80vw; height:50vh; max-width:700px; margin:0 auto;">	
+	</div>
+</div>
+<br><br>

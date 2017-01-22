@@ -1,0 +1,74 @@
+<h2>Find the route to the nearest gas station</h2>
+<p>You can simply allow the app to locate you by geo position, and it will find the gas stations close to you. Or, you can provide the address to serach nearby. You also can choose this option if you would like to find the gas station near the place you are not currently at. All the data you provide is used for thethe gas stations search only, and it isn't collected by us.</p>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<button id="getLocationBtn" class="btn btn-primary btn-lg" type="button" ng-click="getLocation()">
+			locate me
+		</button>
+		<button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#addressDiv" aria-expanded="false" aria-controls="addressDiv">
+			or, I provide the address
+		</button>
+	</div>
+</div>
+<div class="collapse" id="addressDiv">
+  <div class="well">
+    <div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<label for="countryInput">Let start with country</label>
+			<input type="text" class="form-control" id="countryInput" placeholder="your country">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<label for="cityInput">And the city? You can add a state, or province there if applicable</label>
+			<input type="text" class="form-control" id="cityInput" placeholder="city, state, province">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+			<label for="streetInput">The street to search nearby</label>
+			<input type="text" class="form-control" id="streetInput" placeholder="current street">
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+			<label for="buildingInput"># of the building there</label>
+			<input type="text" class="form-control" id="buildingInput" placeholder="# of building">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<button id="geocodeBtn" class="btn btn-primary btn-lg" type="button" ng-click="geocode()">
+  				find by this address
+			</button>
+		</div>
+	</div>
+  </div>
+</div>
+
+
+<div class="row" ng-if="chosenStation.start">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<h3>Here are the results of search:</h3>
+		<table class="table table-hover">
+			<tr ng-repeat="x in stationsListHead">
+				<th class="col-xs-4 col-sm-4 col-md-4 col-lg-4">{{ x.name }}</th>
+				<th class="col-xs-6 col-sm-6 col-md-6 col-lg-6">{{ x.address }}</th>					
+				<th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">{{ x.open }}</th>
+				<th class="col-xs-2 col-sm-2 col-md-2 col-lg-2">Choose any</th>
+			</tr> 
+			<tr ng-repeat="x in stationsList">
+				<td>{{ x.name }}</td>
+				<td>{{ x.address }}</td>
+				<td>{{ x.open }}</td>
+				<td><button id = "{{ x.id }};{{ x.name }};{{ x.coordinates }};{{ x.address }}" class="btn btn-default" type="button" ng-click="chosen($event)" aria-label="choose {{ x.name }} gas station at {{ x.address }} ">Choose this</button></td>
+			</tr>				
+		</table>
+	</div>
+</div> 
+
+<div class="row" ng-if="chosenStation.start">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<hr>
+		<p>Choose any gas station you like and the app will create the route there along with the detailed directions for getting there.</p>
+		<br>
+	</div>
+</div>
