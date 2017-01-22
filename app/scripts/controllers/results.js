@@ -66,6 +66,8 @@ angular.module('routeToGasStationApp')
 						if($scope.staticMap) {
 							$scope.staticMap = response.config.url;
 						}
+					}, function (response) {
+						console.log('error', response);
 					});
 				} else {
 					window.alert('Directions request failed due to ' + status);
@@ -80,9 +82,7 @@ angular.module('routeToGasStationApp')
 				for (var j=2; j<allTextArray.length; j=j+4) {
 					k=j+1;
 					directionsText.push(allTextArray[j].innerText + ' ' + allTextArray[k].innerText);
-				}
-				console.log(directionsText);
-				
+				}			
 			}, 2000);
 
 			initialize();
@@ -190,28 +190,8 @@ angular.module('routeToGasStationApp')
 					speechSynthesis.speak(spekIt);
 					said = 0;
 				}
-			}
-/*
-			spekIt = new SpeechSynthesisUtterance();
-			let s = 0;
-			setTimeout(function repeatSpeak(s) {
-				if (directionsText[s]) {
-					spekIt.text = directionsText[s];
-					console.log(s);
-    				window.speechSynthesis.resume();
-					speechSynthesis.speak(spekIt).then(function() {
-						s = s + 1;
-						repeatSpeak(s);
-					});
-					
-				}
-			}, 2000);
-*/		
+			}		
 		};
-
-		function getLang() {
-		    var currentLang = navigator.language || navigator.userLanguage;
-		}
 
 		initMap();	
 

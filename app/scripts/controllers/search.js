@@ -11,13 +11,7 @@ angular.module('routeToGasStationApp')
 	.controller('SearchCtrl', ['$scope', '$location', '$http', 'geodata', function ($scope, $location, $http, geodata) {
 		$scope.chosenStation = geodata;
     	$scope.getLocation = function() {
-	  		if (navigator.geolocation) {
-/*	    		navigator.geolocation.getCurrentPosition(function(position){
-	      			$scope.$apply(function(){
-	        			$scope.position = position;	        			
-	        			coords = $scope.position.coords.latitude + ',' + $scope.position.coords.longitude;
-	        			console.log('1' + coords);
-*/						
+	  		if (navigator.geolocation) {						
 				navigator.geolocation.getCurrentPosition(coordinates);
 			} else {
 				alert('Geolocation is not supported by this browser.');
@@ -29,8 +23,8 @@ angular.module('routeToGasStationApp')
 			coords = data.coords.latitude + ',' + data.coords.longitude;
 			geodata.start = coords;
 	  		var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + coords + '&radius=5000&types=gas_station&key=AIzaSyBAEwrqTBUvPZpCqyjLjjst85AGzpQbS5Q';
-				$http.get(url)
-				.then(function(response) {
+			$http.get(url)
+			.then(function(response) {
 				var dataCellsArray = [];
 				var dataCellsArrayHead = [{'name':'Station','address':'Address','open':'Open now?'}];
 				var obRowCells = {};
@@ -54,6 +48,8 @@ angular.module('routeToGasStationApp')
 				}	
 				$scope.stationsList = dataCellsArray;
 				$scope.stationsListHead = dataCellsArrayHead;
+			}, function (response) {
+				console.log('error', response);
 			});
 		}
 
@@ -74,7 +70,6 @@ angular.module('routeToGasStationApp')
 					alert('We are sorry, but we can not find that address because of the following reason: ' + status);
 				}
 				geodata.start = coords;
-				console.log(geodata.start);
 				var url ='https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + coords + '&radius=10000&types=gas_station&key=AIzaSyBAEwrqTBUvPZpCqyjLjjst85AGzpQbS5Q';
 				$http.get(url)
 				.then(function(response) {
@@ -101,6 +96,8 @@ angular.module('routeToGasStationApp')
 					}	
 					$scope.stationsList = dataCellsArray;
 					$scope.stationsListHead = dataCellsArrayHead;
+				}, function (response) {
+					console.log('error', response);
 				});
 			});			
 		}
@@ -108,8 +105,6 @@ angular.module('routeToGasStationApp')
 		$scope.chosen = function(event) {
 			var id = event.target.id;
 			var theArray = id.split(';');
-			console.log(theArray);
-			console.log(geodata.start);
 			geodata.chosen.id = theArray[0];
 			geodata.chosen.name = theArray[1];
 			geodata.chosen.coordinates = theArray[2];

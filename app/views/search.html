@@ -1,3 +1,4 @@
+<span ng-hide='online' style="color:red;">You are offline</span>
 <h2>Find the route to the nearest gas station</h2>
 <p>You can simply allow the app to locate you by geo position, and it will find the gas stations close to you. Or, you can provide the address to serach nearby. You also can choose this option if you would like to find the gas station near the place you are not currently at. All the data you provide is used for thethe gas stations search only, and it isn't collected by us.</p>
 <div class="row">
@@ -10,38 +11,38 @@
 		</button>
 	</div>
 </div>
-<div class="collapse" id="addressDiv">
-  <div class="well">
-    <div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<label for="countryInput">Let start with country</label>
-			<input type="text" class="form-control" id="countryInput" placeholder="your country">
+<div class="collapse" id="addressDiv" role="form">
+	<div class="well">
+	    <div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<label for="countryInput">Let start with country</label>
+				<input type="text" class="form-control" id="countryInput" placeholder="your country">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" ng-form name="theCityForm">
+				<label for="cityInput">And the city? You can add a state, or province there if applicable *</label>
+				<input type="text" class="form-control" id="cityInput" name="cityInput" placeholder="city, state, province" ng-model="theCity" required><span ng-show="theCityForm.cityInput.$touched && theCityForm.cityInput.$invalid" style="color:red;">At least city name is required<br></span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+				<label for="streetInput">The street to search nearby</label>
+				<input type="text" class="form-control" id="streetInput" placeholder="current street">
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+				<label for="buildingInput"># of the building there</label>
+				<input type="text" class="form-control" id="buildingInput" placeholder="# of building">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<button id="geocodeBtn" class="btn btn-primary btn-lg" type="button" ng-click="geocode()">
+	  				find by this address
+				</button>
+			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<label for="cityInput">And the city? You can add a state, or province there if applicable</label>
-			<input type="text" class="form-control" id="cityInput" placeholder="city, state, province">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-			<label for="streetInput">The street to search nearby</label>
-			<input type="text" class="form-control" id="streetInput" placeholder="current street">
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-			<label for="buildingInput"># of the building there</label>
-			<input type="text" class="form-control" id="buildingInput" placeholder="# of building">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<button id="geocodeBtn" class="btn btn-primary btn-lg" type="button" ng-click="geocode()">
-  				find by this address
-			</button>
-		</div>
-	</div>
-  </div>
 </div>
 
 
