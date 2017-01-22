@@ -8,7 +8,7 @@
  * Controller of the routeToGasStationApp
  */
 angular.module('routeToGasStationApp')
-	.controller('ResultsCtrl', ['$scope', '$location', '$http', 'geodata', function ($scope, $location, $http, geodata) {
+	.controller('ResultsCtrl', ['$scope', '$location', '$http', 'geodata', '$anchorScroll', function ($scope, $location, $http, geodata, $anchorScroll) {
 		var map;
 		var panorama;
 		var origin;
@@ -22,6 +22,10 @@ angular.module('routeToGasStationApp')
 		var wayPointsString = '';
 		var directionsText = [];
 		var said = 0;
+		var allTextArray;
+		var spekIt;
+		var speakInterval;
+
 		$scope.chosenStation = geodata;
 		$scope.directionsText = directionsText;
 
@@ -32,7 +36,8 @@ angular.module('routeToGasStationApp')
 			});			
 		}
 
-		function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+		function calculateAndDisplayRoute() {
+			initMap();
 			said = 0;
 			var directionsService = new google.maps.DirectionsService;
 			var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -51,26 +56,6 @@ angular.module('routeToGasStationApp')
 			}, function(response, status) {
 				if (status === google.maps.DirectionsStatus.OK) {
 					directionsDisplay.setDirections(response);
-
-					for (let f=0; f<response.routes[0].overview_path.length; f++) {
-						let flat = response.routes[0].overview_path[f].lat();
-						flat = String(flat).slice(0,8);
-						let flng = response.routes[0].overview_path[f].lng();
-						flng = String(flng).slice(0,8);
-						wayPointsString = wayPointsString + '%7C' + flat + ',' + flng;
-					}
-					console.log(response.routes[0].overview_path);
-					var surl ='https://maps.googleapis.com/maps/api/staticmap?size=800x400&maptype=roadmap&markers=' + $scope.chosenStation.start + '%7C' + $scope.chosenStation.chosen.coordinates + '&key=AIzaSyBAEwrqTBUvPZpCqyjLjjst85AGzpQbS5Q&path=color:0x0000ff' + wayPointsString;
-					$http.get(surl)
-					.then(function(response) {
-						if($scope.staticMap) {
-							$scope.staticMap = response.config.url;
-						}
-					}, function (response) {
-						console.log('error', response);
-					});
-				} else {
-					window.alert('Directions request failed due to ' + status);
 				}
 			});
 			directionsDisplay.setMap(map);
@@ -84,7 +69,6 @@ angular.module('routeToGasStationApp')
 					directionsText.push(allTextArray[j].innerText + ' ' + allTextArray[k].innerText);
 				}			
 			}, 2000);
-
 			initialize();
 		}
 
@@ -96,9 +80,6 @@ angular.module('routeToGasStationApp')
         	}
     	});
 
-		var allTextArray;
-		var spekIt;
-
 		function initialize() {
 			panorama = new google.maps.StreetViewPanorama(
 				document.getElementById('street-view'), {
@@ -107,9 +88,9 @@ angular.module('routeToGasStationApp')
 					zoom: 1
 				}
 			);
+			$anchorScroll();
 		}
 
-		var speakInterval;
 		$scope.speakIt = function() {
 			if (window.Notification && Notification.permission !== 'granted') {
 				Notification.requestPermission(function (status) {
@@ -191,8 +172,5 @@ angular.module('routeToGasStationApp')
 					said = 0;
 				}
 			}		
-		};
-
-		initMap();	
-
+		};	
 	}]);

@@ -44,6 +44,13 @@ angular
       });
   })
 
+  .config(['$sceDelegateProvider', function($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',
+      'https://maps.googleapis.com/**'
+    ]);
+  }])
+  
   .run(function($window, $rootScope) {
       $rootScope.online = navigator.onLine;
       $window.addEventListener("offline", function() {

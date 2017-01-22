@@ -108,7 +108,7 @@ body {
   
 .navbar-nav li a{
   font-family: 'Khand', sans-serif;
-  font-size: 2vw;
+  font-size: 1.8vw;
   color: #045564 !important;
 }
 
@@ -159,6 +159,19 @@ button {
   height:50vh;
   max-width:700px;
   margin:0 auto;
+}
+
+#about{
+  min-height: 75vh;
+  background-image: url("../images/pexels-photo-63767.jpeg");
+  background-repeat: no-repeat;
+  background-position: 80% 90%;  
+  background-attachment: fixed;
+  margin: auto;
+  background-color: white;
+  display: block; 
+  border: 2px solid #045564;
+  padding: 3vw;
 }
 
 @media (min-width: 401px)  and (max-width: 900px) {
