@@ -18,6 +18,6 @@ angular.module('routeToGasStationApp')
 				coordinates: '',
 				street: ''
 			}
-		}
+		};
 		return destinations;
 	});

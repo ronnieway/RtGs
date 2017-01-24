@@ -19,31 +19,31 @@ angular.module('routeToGasStationApp')
 		var destlng;
 		var start;
 		var finish;
-		var wayPointsString = '';
 		var directionsText = [];
+		var fullText = '';
 		var said = 0;
 		var allTextArray;
 		var spekIt;
-		var speakInterval;
 
 		$scope.chosenStation = geodata;
 		$scope.directionsText = directionsText;
+		$scope.fullText = fullText;
 
-		function initMap() {
+		function initMap(x, y) {
 			map = new google.maps.Map(document.getElementById('map'), {
 				zoom: 7,
-				center: {lat: 50, lng: 0}
+				center: {lat: x, lng: y}
 			});			
 		}
 
 		function calculateAndDisplayRoute() {
-			initMap();
 			said = 0;
-			var directionsService = new google.maps.DirectionsService;
-			var directionsDisplay = new google.maps.DirectionsRenderer;
+			var directionsService = new google.maps.DirectionsService();
+			var directionsDisplay = new google.maps.DirectionsRenderer();
 			origin = geodata.start.split(',');
 			latt = Number(origin[0]);
 			lngg = Number(origin[1]);
+			initMap(latt, lngg);
 			detination = geodata.chosen.coordinates.split(',');
 			destlat = Number(detination[0]);
 			destlng = Number(detination[1]);
@@ -66,7 +66,8 @@ angular.module('routeToGasStationApp')
 				var k;
 				for (var j=2; j<allTextArray.length; j=j+4) {
 					k=j+1;
-					directionsText.push(allTextArray[j].innerText + ' ' + allTextArray[k].innerText);
+					directionsText.push(allTextArray[j].innerText + ', ' + allTextArray[k].innerText);
+					fullText = fullText + allTextArray[j].innerText + ', ' + allTextArray[k].innerText + ';';
 				}			
 			}, 2000);
 			initialize();
@@ -75,7 +76,7 @@ angular.module('routeToGasStationApp')
 		$scope.$watch(function () {
 			return geodata.chosen.id;
 		}, function (value) {
-        	if (value != ''){
+        	if (value !== ''){
         		calculateAndDisplayRoute();
         	}
     	});
@@ -94,29 +95,39 @@ angular.module('routeToGasStationApp')
 		$scope.speakIt = function() {
 			if (window.Notification && Notification.permission !== 'granted') {
 				Notification.requestPermission(function (status) {
-					if (Notification.permission !== status) {
-						Notification.permission = status;
+//					if (Notification.permission !== status) {
+//						Notification.permission = status;
+//					}
+					if (status === 'granted') {
+						navigator.serviceWorker.ready.then(function(registration) {
+							registration.showNotification('Olala');
+						});
 					}
 				});
 			}
+
 			if (window.Notification && Notification.permission === 'granted') {
-				var n = new Notification('Click this notification to speak up your route');
+				var n = new Notification('Speak up your route', {
+						body: 'Click here to start speaking',
+						icon: '../images/192x192.png'
+					});
 				n.onclick = function(event) {
 					event.preventDefault();
 					tell(said);
 					n.close();
-				}
-				setTimeout(n.close.bind(n), 60000);				
+				};			
 			} else if (window.Notification && Notification.permission !== 'denied') {
 				Notification.requestPermission(function (status) {
 					if (status === 'granted') {
-						var n = new Notification('Click the notification to speak up your route');
+						var n = new Notification('Speak up your route', {
+							body: 'Click here to start speaking',
+							icon: '../images/192x192.png'
+						});
 						n.onclick = function(event) {
 							event.preventDefault();
 							tell(said);
 							n.close();
-						}
-						setTimeout(n.close.bind(n), 60000);				
+						};				
 					} else {
 						alert('Notifications are not allowed in your browser');
 					}
@@ -127,26 +138,30 @@ angular.module('routeToGasStationApp')
 
 			function tellMore() {
 				if (window.Notification && Notification.permission === 'granted') {
-					var interval = setTimeout(function () {
-						var n = new Notification('Click the notification to speak up your route');
+					setTimeout(function () {
+						var n = new Notification('Speak up your route', {
+							body: 'Click here to start speaking',
+							icon: '../images/192x192.png'
+						});
 						n.onclick = function(event) {
 							event.preventDefault();
 							tell(said);
 							n.close();
-						}
-						setTimeout(n.close.bind(n), 60000);				
+						};			
 					}, 5000);
 				} else if (window.Notification && Notification.permission !== 'denied') {
 					Notification.requestPermission(function (status) {
 						if (status === 'granted') {
-							var interval = setTimeout(function () {
-								var n = new Notification('Click the notification to speak up your route');
+							setTimeout(function () {
+								var n = new Notification('Speak up your route', {
+									body: 'Click here to start speaking',
+									icon: '../images/192x192.png'
+								});
 								n.onclick = function(event) {
 									event.preventDefault();
 									tell(said);
 									n.close();
-								}
-								setTimeout(n.close.bind(n), 60000);				
+								};				
 							}, 5000);
 						} else {
 							alert('Notifications are not allowed in your browser');
@@ -171,6 +186,14 @@ angular.module('routeToGasStationApp')
 					speechSynthesis.speak(spekIt);
 					said = 0;
 				}
-			}		
+			}
+		};
+
+		$scope.speakItAll = function() {
+			spekIt = new SpeechSynthesisUtterance();
+			console.log('fulltext: ' + fullText);
+			spekIt.text = fullText;
+	    	window.speechSynthesis.resume();
+			speechSynthesis.speak(spekIt);					
 		};	
 	}]);

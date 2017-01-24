@@ -12,4 +12,9 @@ angular.module('routeToGasStationApp')
 		$scope.isActive = function (viewLocation) {
 			return viewLocation === $location.path();
 		};
+
+		$scope.hideMobMenu = function() {
+			var el = angular.element('#js-navbar-collapse');
+ 			el.attr('class', 'navbar-collapse collapse');
+		}
 	});

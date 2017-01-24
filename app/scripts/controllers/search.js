@@ -17,14 +17,18 @@ angular.module('routeToGasStationApp')
 
     	$scope.getLocation = function() {
 	  		if (navigator.geolocation) {						
-				navigator.geolocation.getCurrentPosition(coordinates);
+				navigator.geolocation.getCurrentPosition (coordinates, smthWrong,{enableHighAccuracy: false, maximumAge: 10000, timeout: 10000});
+				console.log('Geolocation received');
 			} else {
-				alert('Geolocation is not supported by this browser.');
+				alert('Sorry, we can not receive your Geolocation. Please, try inputting your address');
+				console.log('Geolocation is not supported by this browser');
 			}			
 		};
 
 		function coordinates (data) {
+			console.log(data);
 			coords = data.coords.latitude + ',' + data.coords.longitude;
+			console.log(coords);
 			geodata.start = coords;
 			var fromHere = new google.maps.LatLng(Number(data.coords.latitude),Number(data.coords.longitude));
 	  		var request = {
@@ -35,10 +39,10 @@ angular.module('routeToGasStationApp')
 
 			service = new google.maps.places.PlacesService(document.createElement('div'));
 			service.nearbySearch(request, callback);
-		};
+		}
 
 		function callback(results, status) {
-			if (status == google.maps.places.PlacesServiceStatus.OK) {
+			if (status === google.maps.places.PlacesServiceStatus.OK) {
 				var obRowCells = {};
 				dataCellsArray = [];
 				for (var k=0; k<results.length; k++) {
@@ -65,7 +69,11 @@ angular.module('routeToGasStationApp')
 			$scope.stationsList = dataCellsArray;
 			$scope.$apply();
 			$anchorScroll();
-		};
+		}
+
+		function smthWrong() {
+			console.log('Something goes wrong with geolocation');
+		}
 
 		$scope.geocode = function() {
 			var country = document.getElementById('countryInput').value;
@@ -105,5 +113,5 @@ angular.module('routeToGasStationApp')
 			geodata.chosen.coordinates = theArray[2];
 			geodata.chosen.street = theArray[3];
 			$location.path('results');
-		}		
+		};		
 	}]);

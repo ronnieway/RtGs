@@ -1,4 +1,6 @@
-/*if ('serviceWorker' in navigator) {
+'use strict';
+
+if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('/swGetData.js')
 	.then(function(registration) {
 		console.log('SWORKER registered:', registration);
@@ -6,4 +8,3 @@
 		console.log('SWORKER registration error: ' + err);
 	});
 }
-*/
