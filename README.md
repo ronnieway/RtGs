@@ -8,10 +8,10 @@ It uses:
 It creates:
 - route to the chosen gas station (and show it at the map)
 - step by step direction for getting there
-- street view for guessting how the final destination looks like
+- street view for guessing how the final destination looks like
 Also, it provides:
 - text (step by step directions) to speach
-- notifications (with window.notification service) for the desktop users - just for getting the directions speaked one by one after the notification click
+- notifications (with window.notification service) for the desktop users - just for getting the directions spoken one by one after the notification click
 
 The project is created with Angular framework, using yoman and grunt for task automation.
 
